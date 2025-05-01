@@ -1,6 +1,7 @@
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
+import { Paper, Grid, Typography, Box } from '@mui/material';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
@@ -19,48 +20,92 @@ const Statistics = ({ countries }) => {
     return acc;
   }, {});
 
+  // Sort languages by frequency and get top 10
+  const sortedLanguages = Object.entries(languageDistribution)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 10);
+
   const pieData = {
     labels: Object.keys(populationByRegion),
     datasets: [{
       data: Object.values(populationByRegion),
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+      backgroundColor: [
+        '#2196F3',  // Blue
+        '#4CAF50',  // Green
+        '#FFC107',  // Amber
+        '#F44336',  // Red
+        '#9C27B0',  // Purple
+        '#FF9800'   // Orange
+      ],
+      borderColor: 'white',
+      borderWidth: 2
     }]
   };
 
   const barData = {
-    labels: Object.keys(languageDistribution).slice(0, 10),
+    labels: sortedLanguages.map(([lang]) => lang),
     datasets: [{
       label: 'Number of Countries',
-      data: Object.values(languageDistribution).slice(0, 10),
-      backgroundColor: '#36A2EB'
+      data: sortedLanguages.map(([,count]) => count),
+      backgroundColor: '#2196F3',
+      borderColor: '#1976D2',
+      borderWidth: 1
     }]
   };
 
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          padding: 20
+        }
+      }
+    }
+  };
+
+  const barOptions = {
+    ...chartOptions,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          precision: 0
+        }
+      }
+    }
+  };
+
   return (
-    <div className="statistics-container my-4">
-      <div className="row">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-header">
-              <h5>Population by Region</h5>
-            </div>
-            <div className="card-body">
-              <Pie data={pieData} />
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-header">
-              <h5>Top 10 Languages</h5>
-            </div>
-            <div className="card-body">
-              <Bar data={barData} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
+      <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
+        Global Statistics
+      </Typography>
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={1} sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom align="center">
+              Population by Region
+            </Typography>
+            <Box sx={{ height: 300 }}>
+              <Pie data={pieData} options={chartOptions} />
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={1} sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom align="center">
+              Top 10 Languages
+            </Typography>
+            <Box sx={{ height: 300 }}>
+              <Bar data={barData} options={barOptions} />
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 

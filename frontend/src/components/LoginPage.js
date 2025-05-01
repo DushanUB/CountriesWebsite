@@ -1,9 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/api";
+import { 
+  Container, 
+  Paper, 
+  TextField, 
+  Button, 
+  Typography, 
+  Box,
+  Link
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Avatar from '@mui/material/Avatar';
 
 const LoginPage = ({ setUser }) => {
   const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -14,33 +26,78 @@ const LoginPage = ({ setUser }) => {
       setUser(response.token);
       navigate("/");
     } catch (error) {
-      console.error("Login failed:", error);
+      setError("Invalid credentials. Please try again.");
     }
   };
 
   return (
-    <div className="container mt-5">
-      <form onSubmit={handleSubmit} className="w-50 mx-auto">
-        <h2 className="mb-4">Login</h2>
-        <div className="mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Username"
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: 4, 
+            mt: 3,
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2
+          }}
+        >
+          {error && (
+            <Typography color="error" variant="body2" align="center">
+              {error}
+            </Typography>
+          )}
+          <TextField
+            required
+            fullWidth
+            label="Username"
+            variant="outlined"
             onChange={(e) => setCredentials({...credentials, username: e.target.value})}
           />
-        </div>
-        <div className="mb-3">
-          <input
+          <TextField
+            required
+            fullWidth
+            label="Password"
             type="password"
-            className="form-control"
-            placeholder="Password"
+            variant="outlined"
             onChange={(e) => setCredentials({...credentials, password: e.target.value})}
           />
-        </div>
-        <button type="submit" className="btn btn-primary">Login</button>
-      </form>
-    </div>
+          <Button
+            fullWidth
+            variant="contained"
+            size="large"
+            onClick={handleSubmit}
+            sx={{ mt: 2 }}
+          >
+            Sign In
+          </Button>
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <Link
+              component="button"
+              variant="body2"
+              onClick={() => navigate("/register")}
+            >
+              Don't have an account? Sign Up
+            </Link>
+          </Box>
+        </Paper>
+      </Box>
+    </Container>
   );
 };
 

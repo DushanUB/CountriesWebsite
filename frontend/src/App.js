@@ -1,9 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { 
+  AppBar, 
+  Toolbar, 
+  Typography, 
+  Button, 
+  Box, 
+  CssBaseline,
+  Container
+} from '@mui/material';
 import CountryList from "./components/CountryList";
-import LoginPage from "./components/LoginPage.js";
+import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+    background: {
+      default: '#f5f5f5',
+    },
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
+    },
+  },
+});
 
 const AppContent = () => {
   const [user, setUser] = useState(null);
@@ -23,44 +59,57 @@ const AppContent = () => {
   };
 
   return (
-    <>
-      <nav className="navbar navbar-light bg-light">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="/">Country Explorer</a>
-          <div>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="fixed" elevation={1}>
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate("/")}>
+            Country Explorer
+          </Typography>
+          <Box>
             {user ? (
-              <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+              <Button color="inherit" onClick={handleLogout}>
+                Logout
+              </Button>
             ) : (
-              <div>
-                <button className="btn btn-primary me-2" onClick={() => navigate("/login")}>Login</button>
-                <button className="btn btn-outline-primary" onClick={() => navigate("/register")}>Register</button>
-              </div>
+              <Box>
+                <Button color="inherit" onClick={() => navigate("/login")} sx={{ mr: 1 }}>
+                  Login
+                </Button>
+                <Button color="inherit" variant="outlined" onClick={() => navigate("/register")}>
+                  Register
+                </Button>
+              </Box>
             )}
-          </div>
-        </div>
-      </nav>
-
-      <Routes>
-        <Route 
-          path="/" 
-          element={
-            <ProtectedRoute>
-              <CountryList />
-            </ProtectedRoute>
-          } 
-        />
-        <Route path="/login" element={<LoginPage setUser={setUser} />} />
-        <Route path="/register" element={<RegisterPage />} />
-      </Routes>
-    </>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Toolbar /> {/* Spacer for fixed AppBar */}
+      <Container maxWidth="xl" sx={{ mt: 4 }}>
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <ProtectedRoute>
+                <CountryList />
+              </ProtectedRoute>
+            } 
+          />
+          <Route path="/login" element={<LoginPage setUser={setUser} />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Routes>
+      </Container>
+    </Box>
   );
 };
 
 const App = () => {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <AppContent />
+      </Router>
+    </ThemeProvider>
   );
 };
 

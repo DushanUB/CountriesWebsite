@@ -1,7 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { getAllCountries, searchCountryByName, filterByRegion, filterByLanguage } from "../services/api";
 import { useNavigate } from "react-router-dom";
-import './CountryList.css';
+import {
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  TextField,
+  MenuItem,
+  IconButton,
+  Box,
+  Paper,
+  Button,
+  CardActions,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Chip,
+  CircularProgress,
+  Alert,
+  Stack,
+  CardHeader,
+  ButtonGroup,
+  Divider
+} from '@mui/material';
+import {
+  Star as StarIcon,
+  StarBorder as StarBorderIcon,
+  Sort as SortIcon,
+  BarChart as BarChartIcon,
+  Close as CloseIcon,
+  Language as LanguageIcon,
+  Public as PublicIcon
+} from '@mui/icons-material';
 import Statistics from './Statistics';
 
 const CountryList = () => {
@@ -122,228 +155,316 @@ const CountryList = () => {
     }
   };
 
-  const handleCountryClick = (country) => {
-    setSelectedCountry(country);
-  };
-
   const displayedCountries = showFavorites ? favorites : countries;
 
   return (
-    <div className="container mt-4">
-      <div className="filters-container">
-        <div className="row mb-3">
-          <div className="col-md-8">
-            <div className="btn-group">
-              <button 
-                className={`btn ${sortBy === 'name' ? 'btn-primary' : 'btn-outline-primary'}`}
-                onClick={() => handleSort('name')}
-              >
-                Sort by Name
-              </button>
-              <button 
-                className={`btn ${sortBy === 'population' ? 'btn-primary' : 'btn-outline-primary'}`}
-                onClick={() => handleSort('population')}
-              >
-                Sort by Population
-              </button>
-              <button 
-                className={`btn ${sortBy === 'area' ? 'btn-primary' : 'btn-outline-primary'}`}
-                onClick={() => handleSort('area')}
-              >
-                Sort by Area
-              </button>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <button 
-              className={`btn ${showStats ? 'btn-primary' : 'btn-outline-primary'} w-100`}
-              onClick={() => setShowStats(!showStats)}
-            >
-              {showStats ? 'Hide Statistics' : 'Show Statistics'}
-            </button>
-          </div>
-        </div>
-
-        <div className="row mb-4">
-          <div className="col-md-4">
-            <div className="input-group">
-              <input 
-                type="text" 
-                className="form-control" 
-                placeholder="Search by name" 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)} 
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              />
-              <button className="btn btn-primary" onClick={handleSearch}>Search</button>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <select 
-              className="form-select" 
+    <Box>
+      <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={4}>
+            <TextField
+              fullWidth
+              label="Search countries"
+              variant="outlined"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              InputProps={{
+                endAdornment: (
+                  <Button 
+                    variant="contained" 
+                    onClick={handleSearch}
+                    sx={{ ml: 1 }}
+                  >
+                    Search
+                  </Button>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <TextField
+              select
+              fullWidth
+              label="Language"
               value={language}
               onChange={(e) => {
                 setLanguage(e.target.value);
                 handleLanguageFilter(e.target.value);
               }}
             >
-              <option value="">All Languages</option>
-              <option value="English">English</option>
-              <option value="Spanish">Spanish</option>
-              <option value="French">French</option>
-              <option value="Arabic">Arabic</option>
-              <option value="Chinese">Chinese</option>
-            </select>
-          </div>
-          <div className="col-md-4">
-            <select 
-              className="form-select" 
+              <MenuItem value="">All Languages</MenuItem>
+              <MenuItem value="English">English</MenuItem>
+              <MenuItem value="Spanish">Spanish</MenuItem>
+              <MenuItem value="French">French</MenuItem>
+              <MenuItem value="Arabic">Arabic</MenuItem>
+              <MenuItem value="Chinese">Chinese</MenuItem>
+            </TextField>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <TextField
+              select
+              fullWidth
+              label="Region"
               value={region}
               onChange={(e) => {
                 setRegion(e.target.value);
                 handleFilter(e.target.value);
               }}
             >
-              <option value="">All Regions</option>
-              <option value="Africa">Africa</option>
-              <option value="Americas">Americas</option>
-              <option value="Asia">Asia</option>
-              <option value="Europe">Europe</option>
-              <option value="Oceania">Oceania</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-4">
-            <button 
-              className={`btn ${showFavorites ? 'btn-primary' : 'btn-outline-primary'} w-100`}
+              <MenuItem value="">All Regions</MenuItem>
+              <MenuItem value="Africa">Africa</MenuItem>
+              <MenuItem value="Americas">Americas</MenuItem>
+              <MenuItem value="Asia">Asia</MenuItem>
+              <MenuItem value="Europe">Europe</MenuItem>
+              <MenuItem value="Oceania">Oceania</MenuItem>
+            </TextField>
+          </Grid>
+          <Grid item xs={12} md={2}>
+            <Button
+              fullWidth
+              variant={showFavorites ? "contained" : "outlined"}
+              startIcon={showFavorites ? <StarIcon /> : <StarBorderIcon />}
               onClick={() => setShowFavorites(!showFavorites)}
+              sx={{ height: '56px' }}
             >
-              {showFavorites ? 'Show All Countries' : 'Show Favorites'}
-            </button>
-          </div>
-        </div>
-      </div>
+              {showFavorites ? 'All Countries' : 'Favorites'}
+            </Button>
+          </Grid>
+        </Grid>
+
+        <Box sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={8}>
+              <ButtonGroup variant="outlined" fullWidth>
+                <Button
+                  startIcon={<SortIcon />}
+                  onClick={() => handleSort('name')}
+                  variant={sortBy === 'name' ? 'contained' : 'outlined'}
+                >
+                  Name
+                </Button>
+                <Button
+                  startIcon={<PublicIcon />}
+                  onClick={() => handleSort('population')}
+                  variant={sortBy === 'population' ? 'contained' : 'outlined'}
+                >
+                  Population
+                </Button>
+                <Button
+                  startIcon={<LanguageIcon />}
+                  onClick={() => handleSort('area')}
+                  variant={sortBy === 'area' ? 'contained' : 'outlined'}
+                >
+                  Area
+                </Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Button
+                fullWidth
+                variant={showStats ? "contained" : "outlined"}
+                startIcon={<BarChartIcon />}
+                onClick={() => setShowStats(!showStats)}
+              >
+                {showStats ? 'Hide Statistics' : 'Show Statistics'}
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {error}
+        </Alert>
+      )}
 
       {showStats && <Statistics countries={countries} />}
 
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
-        </div>
-      )}
-
       {loading ? (
-        <div className="text-center my-5">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
+        <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+          <CircularProgress />
+        </Box>
       ) : (
-        <>
-          {selectedCountry && (
-            <div className="country-details mb-4">
-              <div className="card-header d-flex justify-content-between align-items-center">
-                <h3>{selectedCountry.name.common}</h3>
-                <div>
-                  <button 
-                    className="btn btn-primary me-2"
-                    onClick={(e) => handleAddToFavorites(e, selectedCountry)}
-                  >
-                    {favorites.some(fav => fav.cca3 === selectedCountry.cca3) ? 'Remove from Favorites' : 'Add to Favorites'}
-                  </button>
-                  <button className="btn btn-secondary" onClick={() => setSelectedCountry(null)}>Close</button>
-                </div>
-              </div>
-              <div className="card-body">
-                <div className="row">
-                  <div className="col-md-4">
-                    <img 
-                      src={selectedCountry.flags.png} 
-                      alt={`Flag of ${selectedCountry.name.common}`}
-                      className="img-fluid mb-3"
-                    />
-                    {selectedCountry.coatOfArms?.png && (
-                      <img 
-                        src={selectedCountry.coatOfArms.png}
-                        alt={`Coat of Arms of ${selectedCountry.name.common}`}
-                        className="img-fluid mb-3"
-                        style={{ maxHeight: '100px' }}
-                      />
-                    )}
-                  </div>
-                  <div className="col-md-8">
-                    <div className="row">
-                      <div className="col-md-6">
-                        <p><strong>Official Name:</strong> {selectedCountry.name.official}</p>
-                        <p><strong>Capital:</strong> {selectedCountry.capital}</p>
-                        <p><strong>Region:</strong> {selectedCountry.region}</p>
-                        <p><strong>Subregion:</strong> {selectedCountry.subregion}</p>
-                        <p><strong>Population:</strong> {selectedCountry.population.toLocaleString()}</p>
-                      </div>
-                      <div className="col-md-6">
-                        <p><strong>Languages:</strong> {Object.values(selectedCountry.languages || {}).join(', ')}</p>
-                        <p><strong>Currencies:</strong> {Object.values(selectedCountry.currencies || {}).map(c => `${c.name} (${c.symbol})`).join(', ')}</p>
-                        <p><strong>Area:</strong> {selectedCountry.area?.toLocaleString()} km²</p>
-                        <p><strong>Time Zones:</strong> {selectedCountry.timezones?.join(', ')}</p>
-                        {selectedCountry.capital && (
-                          <p><strong>Capital Coordinates:</strong> {selectedCountry.capitalInfo?.latlng?.join(', ')}</p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      {selectedCountry.maps?.googleMaps && (
-                        <a href={selectedCountry.maps.googleMaps} target="_blank" rel="noopener noreferrer" className="btn btn-primary me-2">
-                          View on Google Maps
-                        </a>
-                      )}
-                      {selectedCountry.maps?.openStreetMaps && (
-                        <a href={selectedCountry.maps.openStreetMaps} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary">
-                          View on OpenStreetMap
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div className="row">
-            {displayedCountries.map((country) => (
-              <div key={country.cca3} className="col-md-4 mb-4">
-                <div className="card h-100 country-card">
-                  <div className="card-header d-flex justify-content-between align-items-center">
-                    <button 
-                      className="favorite-btn"
+        <Grid container spacing={3}>
+          {displayedCountries.map((country) => (
+            <Grid key={country.cca3} item xs={12} sm={6} md={4} lg={3} sx={{ display: 'flex' }}>
+              <Card 
+                className="country-card"
+                sx={{ 
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  backdropFilter: 'blur(10px)',
+                }}
+              >
+                <CardHeader
+                  sx={{ color: 'white' }}
+                  action={
+                    <IconButton
                       onClick={(e) => handleAddToFavorites(e, country)}
+                      color={favorites.some(fav => fav.cca3 === country.cca3) ? "warning" : "default"}
+                      sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
                     >
-                      {favorites.some(fav => fav.cca3 === country.cca3) ? '★' : '☆'}
-                    </button>
-                  </div>
-                  <div onClick={() => handleCountryClick(country)} style={{cursor: 'pointer'}}>
-                    <img 
-                      src={country.flags.png} 
-                      alt={`Flag of ${country.name.common}`}
-                      className="card-img-top flag-img"
-                    />
-                    <div className="card-body">
-                      <h5 className="card-title">{country.name.common}</h5>
-                      <p className="card-text">
-                        <strong>Region:</strong> {country.region}<br />
-                        <strong>Capital:</strong> {country.capital}<br />
-                        <strong>Population:</strong> {country.population.toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
+                      {favorites.some(fav => fav.cca3 === country.cca3) ? <StarIcon /> : <StarBorderIcon />}
+                    </IconButton>
+                  }
+                />
+                <CardMedia
+                  component="img"
+                  className="flag-img"
+                  image={country.flags.png}
+                  alt={`Flag of ${country.name.common}`}
+                  onClick={() => setSelectedCountry(country)}
+                />
+                <CardContent sx={{ flexGrow: 1, color: 'white' }}>
+                  <Typography variant="h6" gutterBottom className="card-title">
+                    {country.name.common}
+                  </Typography>
+                  <Stack spacing={1}>
+                    <Typography variant="body2" className="card-text">
+                      Region: {country.region}
+                    </Typography>
+                    <Typography variant="body2" className="card-text">
+                      Capital: {country.capital}
+                    </Typography>
+                    <Typography variant="body2" className="card-text">
+                      Population: {country.population.toLocaleString()}
+                    </Typography>
+                  </Stack>
+                </CardContent>
+                <CardActions sx={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                  <Button 
+                    size="small" 
+                    onClick={() => setSelectedCountry(country)}
+                    sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
+                  >
+                    Learn More
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       )}
-    </div>
+
+      <Dialog
+        open={!!selectedCountry}
+        onClose={() => setSelectedCountry(null)}
+        maxWidth="md"
+        fullWidth
+      >
+        {selectedCountry && (
+          <>
+            <DialogTitle>
+              <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="h6">{selectedCountry.name.common}</Typography>
+                <IconButton onClick={() => setSelectedCountry(null)}>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+            </DialogTitle>
+            <DialogContent>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={4}>
+                  <Card elevation={0}>
+                    <CardMedia
+                      component="img"
+                      image={selectedCountry.flags.png}
+                      alt={`Flag of ${selectedCountry.name.common}`}
+                      sx={{ objectFit: 'contain', bgcolor: '#f5f5f5' }}
+                    />
+                  </Card>
+                  {selectedCountry.coatOfArms?.png && (
+                    <Card elevation={0} sx={{ mt: 2 }}>
+                      <CardMedia
+                        component="img"
+                        image={selectedCountry.coatOfArms.png}
+                        alt={`Coat of Arms of ${selectedCountry.name.common}`}
+                        sx={{ height: 100, objectFit: 'contain' }}
+                      />
+                    </Card>
+                  )}
+                </Grid>
+                <Grid item xs={12} md={8}>
+                  <Stack spacing={2}>
+                    <Typography variant="h6">Official Name: {selectedCountry.name.official}</Typography>
+                    <Divider />
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        <Stack spacing={1}>
+                          <Typography><strong>Capital:</strong> {selectedCountry.capital}</Typography>
+                          <Typography><strong>Region:</strong> {selectedCountry.region}</Typography>
+                          <Typography><strong>Subregion:</strong> {selectedCountry.subregion}</Typography>
+                          <Typography>
+                            <strong>Population:</strong> {selectedCountry.population.toLocaleString()}
+                          </Typography>
+                        </Stack>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Stack spacing={1}>
+                          <Typography>
+                            <strong>Languages:</strong>
+                            <Box sx={{ mt: 1 }}>
+                              {Object.values(selectedCountry.languages || {}).map((lang, index) => (
+                                <Chip 
+                                  key={index} 
+                                  label={lang} 
+                                  size="small" 
+                                  sx={{ mr: 0.5, mb: 0.5 }} 
+                                />
+                              ))}
+                            </Box>
+                          </Typography>
+                          <Typography>
+                            <strong>Currencies:</strong>
+                            <Box sx={{ mt: 1 }}>
+                              {Object.values(selectedCountry.currencies || {}).map((curr, index) => (
+                                <Chip 
+                                  key={index} 
+                                  label={`${curr.name} (${curr.symbol})`} 
+                                  size="small" 
+                                  sx={{ mr: 0.5, mb: 0.5 }} 
+                                />
+                              ))}
+                            </Box>
+                          </Typography>
+                          <Typography><strong>Area:</strong> {selectedCountry.area?.toLocaleString()} km²</Typography>
+                          <Typography><strong>Time Zones:</strong> {selectedCountry.timezones?.join(', ')}</Typography>
+                        </Stack>
+                      </Grid>
+                    </Grid>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              {selectedCountry.maps?.googleMaps && (
+                <Button 
+                  href={selectedCountry.maps.googleMaps} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  View on Google Maps
+                </Button>
+              )}
+              {selectedCountry.maps?.openStreetMaps && (
+                <Button 
+                  href={selectedCountry.maps.openStreetMaps} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  View on OpenStreetMap
+                </Button>
+              )}
+              <Button onClick={() => setSelectedCountry(null)}>Close</Button>
+            </DialogActions>
+          </>
+        )}
+      </Dialog>
+    </Box>
   );
 };
 
