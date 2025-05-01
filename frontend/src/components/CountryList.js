@@ -182,10 +182,10 @@ const CountryList = () => {
           transform: 'translateY(-50%)', 
           opacity: 0.8, 
           pointerEvents: 'none',
-          width: '200px',  // Increased from implicit size
-          height: '200px'  // Added explicit height
+          width: '200px',
+          height: '200px'
         }}>
-          <Globe3D size={200} />  // Increased from 120
+          <Globe3D size={200} />
         </Box>
         <Grid container spacing={3} sx={{ width: '100%', m: 0, position: 'relative', zIndex: 1 }}>
           <Grid item xs={12} md={3}>
