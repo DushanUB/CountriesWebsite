@@ -549,8 +549,8 @@ const CountryList = () => {
                   sx={{
                     height: '160px',
                     width: '100%',
-                    maxWidth: '270px',
-                    minWidth: '270px',
+                    maxWidth: '305px',
+                    minWidth: '305px',
                     margin: '3 auto',
                     display: 'flex',
                     alignItems: 'center',
@@ -673,62 +673,127 @@ const CountryList = () => {
         onClose={() => setSelectedCountry(null)}
         maxWidth="md"
         fullWidth
+        PaperProps={{
+          sx: {
+            background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '16px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+            color: 'white'
+          }
+        }}
       >
         {selectedCountry && (
           <>
-            <DialogTitle>
+            <DialogTitle
+              sx={{
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.7) 100%)'
+              }}
+            >
               <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant="h6">{selectedCountry.name.common}</Typography>
-                <IconButton onClick={() => setSelectedCountry(null)}>
+                <Typography variant="h5" sx={{ fontWeight: 600, color: 'white' }}>
+                  {selectedCountry.name.common}
+                </Typography>
+                <IconButton 
+                  onClick={() => setSelectedCountry(null)}
+                  sx={{
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      color: 'white',
+                      transform: 'rotate(90deg)',
+                      background: 'rgba(255, 255, 255, 0.1)'
+                    }
+                  }}
+                >
                   <CloseIcon />
                 </IconButton>
               </Box>
             </DialogTitle>
-            <DialogContent>
+            <DialogContent sx={{ mt: 2 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={4}>
-                  <Card elevation={0} sx={{ maxWidth: '400px', margin: '0 auto', width: '100%' }}>
+                  <Card 
+                    elevation={0} 
+                    sx={{ 
+                      background: 'transparent',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      overflow: 'hidden'
+                    }}
+                  >
                     <CardMedia
                       component="img"
                       image={selectedCountry.flags.png}
                       alt={`Flag of ${selectedCountry.name.common}`}
                       sx={{ 
                         objectFit: 'contain',
-                        bgcolor: '#f5f5f5',
+                        bgcolor: 'rgba(255, 255, 255, 0.05)',
                         height: '200px',
-                        width: '100%'
+                        width: '100%',
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                          transform: 'scale(1.05)'
+                        }
                       }}
                     />
                   </Card>
                   {selectedCountry.coatOfArms?.png && (
-                    <Card elevation={0} sx={{ mt: 2 }}>
+                    <Card 
+                      elevation={0} 
+                      sx={{ 
+                        mt: 2,
+                        background: 'transparent',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        borderRadius: '12px',
+                        overflow: 'hidden'
+                      }}
+                    >
                       <CardMedia
                         component="img"
                         image={selectedCountry.coatOfArms.png}
                         alt={`Coat of Arms of ${selectedCountry.name.common}`}
-                        sx={{ height: 100, objectFit: 'contain' }}
+                        sx={{ 
+                          height: 100, 
+                          objectFit: 'contain',
+                          bgcolor: 'rgba(255, 255, 255, 0.05)',
+                          transition: 'transform 0.3s ease',
+                          '&:hover': {
+                            transform: 'scale(1.05)'
+                          }
+                        }}
                       />
                     </Card>
                   )}
                 </Grid>
                 <Grid item xs={12} md={8}>
                   <Stack spacing={2}>
-                    <Typography variant="h6">Official Name: {selectedCountry.name.official}</Typography>
-                    <Divider />
+                    <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                      Official Name: {selectedCountry.name.official}
+                    </Typography>
+                    <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)' }} />
                     <Grid container spacing={2}>
                       <Grid item xs={6}>
-                        <Stack spacing={1}>
-                          <Typography><strong>Capital:</strong> {selectedCountry.capital}</Typography>
-                          <Typography><strong>Region:</strong> {selectedCountry.region}</Typography>
-                          <Typography><strong>Subregion:</strong> {selectedCountry.subregion}</Typography>
-                          <Typography>
+                        <Stack spacing={1.5}>
+                          <Typography sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                            <strong>Capital:</strong> {selectedCountry.capital}
+                          </Typography>
+                          <Typography sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                            <strong>Region:</strong> {selectedCountry.region}
+                          </Typography>
+                          <Typography sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                            <strong>Subregion:</strong> {selectedCountry.subregion}
+                          </Typography>
+                          <Typography sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                             <strong>Population:</strong> {selectedCountry.population.toLocaleString()}
                           </Typography>
                         </Stack>
                       </Grid>
                       <Grid item xs={6}>
-                        <Stack spacing={1}>
-                          <Typography>
+                        <Stack spacing={1.5}>
+                          <Typography sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                             <strong>Languages:</strong>
                             <Box sx={{ mt: 1 }}>
                               {Object.values(selectedCountry.languages || {}).map((lang, index) => (
@@ -736,12 +801,21 @@ const CountryList = () => {
                                   key={index} 
                                   label={lang} 
                                   size="small" 
-                                  sx={{ mr: 0.5, mb: 0.5 }} 
+                                  sx={{ 
+                                    mr: 0.5, 
+                                    mb: 0.5,
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    color: 'white',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                    '&:hover': {
+                                      background: 'rgba(255, 255, 255, 0.2)'
+                                    }
+                                  }} 
                                 />
                               ))}
                             </Box>
                           </Typography>
-                          <Typography>
+                          <Typography sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                             <strong>Currencies:</strong>
                             <Box sx={{ mt: 1 }}>
                               {Object.values(selectedCountry.currencies || {}).map((curr, index) => (
@@ -749,13 +823,26 @@ const CountryList = () => {
                                   key={index} 
                                   label={`${curr.name} (${curr.symbol})`} 
                                   size="small" 
-                                  sx={{ mr: 0.5, mb: 0.5 }} 
+                                  sx={{ 
+                                    mr: 0.5, 
+                                    mb: 0.5,
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    color: 'white',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                    '&:hover': {
+                                      background: 'rgba(255, 255, 255, 0.2)'
+                                    }
+                                  }} 
                                 />
                               ))}
                             </Box>
                           </Typography>
-                          <Typography><strong>Area:</strong> {selectedCountry.area?.toLocaleString()} km²</Typography>
-                          <Typography><strong>Time Zones:</strong> {selectedCountry.timezones?.join(', ')}</Typography>
+                          <Typography sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                            <strong>Area:</strong> {selectedCountry.area?.toLocaleString()} km²
+                          </Typography>
+                          <Typography sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                            <strong>Time Zones:</strong> {selectedCountry.timezones?.join(', ')}
+                          </Typography>
                         </Stack>
                       </Grid>
                     </Grid>
@@ -763,14 +850,30 @@ const CountryList = () => {
                 </Grid>
               </Grid>
             </DialogContent>
-            <DialogActions>
+            <DialogActions sx={{ 
+              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              p: 2.5,
+              gap: 2,
+              background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.7) 100%)'
+            }}>
               {selectedCountry.maps?.googleMaps && (
                 <Button 
                   href={selectedCountry.maps.googleMaps} 
                   target="_blank" 
                   rel="noopener noreferrer"
+                  startIcon={<PublicIcon />}
+                  sx={{
+                    background: 'linear-gradient(135deg, #4285F4 0%, #0F9D58 100%)',
+                    color: 'white',
+                    px: 3,
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #5295FF 0%, #1FAD68 100%)',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 12px rgba(66, 133, 244, 0.3)'
+                    }
+                  }}
                 >
-                  View on Google Maps
+                  Google Maps
                 </Button>
               )}
               {selectedCountry.maps?.openStreetMaps && (
@@ -778,11 +881,37 @@ const CountryList = () => {
                   href={selectedCountry.maps.openStreetMaps} 
                   target="_blank" 
                   rel="noopener noreferrer"
+                  startIcon={<LanguageIcon />}
+                  sx={{
+                    background: 'linear-gradient(135deg, #7B4397 0%, #DC2430 100%)',
+                    color: 'white',
+                    px: 3,
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #8B53A7 0%, #EC3440 100%)',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 12px rgba(220, 36, 48, 0.3)'
+                    }
+                  }}
                 >
-                  View on OpenStreetMap
+                  OpenStreetMap
                 </Button>
               )}
-              <Button onClick={() => setSelectedCountry(null)}>Close</Button>
+              <Button 
+                onClick={() => setSelectedCountry(null)}
+                startIcon={<CloseIcon />}
+                sx={{
+                  background: 'linear-gradient(135deg, #FF512F 0%, #DD2476 100%)',
+                  color: 'white',
+                  px: 3,
+                  '&:hover': {
+                    background: 'linear-gradient(135deg, #FF612F 0%, #ED3476 100%)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 4px 12px rgba(255, 81, 47, 0.3)'
+                  }
+                }}
+              >
+                Close
+              </Button>
             </DialogActions>
           </>
         )}
