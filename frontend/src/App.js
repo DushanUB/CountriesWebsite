@@ -99,7 +99,31 @@ const AppContent = () => {
         }}
       >
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate("/")}>
+          <Typography 
+            variant="h6" 
+            component="div" 
+            sx={{ 
+              flexGrow: 1, 
+              cursor: 'pointer',
+              fontFamily: "'Dancing Script', cursive",
+              fontSize: '2.5rem',
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #DAA520 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textShadow: '3px 3px 6px rgba(0,0,0,0.3)',
+              letterSpacing: '2px',
+              transition: 'all 0.4s ease',
+              '&:hover': {
+                transform: 'scale(1.03)',
+                background: 'linear-gradient(135deg, #FFE55C 0%, #FFB74D 50%, #E6B23F 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                letterSpacing: '3px'
+              }
+            }} 
+            onClick={() => navigate("/")}
+          >
             Country Explorer
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -125,11 +149,53 @@ const AppContent = () => {
                 Logout
               </Button>
             ) : (
-              <Box>
-                <Button color="inherit" onClick={() => navigate("/login")} sx={{ mr: 1 }}>
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Button 
+                  color="inherit" 
+                  onClick={() => navigate("/login")}
+                  sx={{
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '8px',
+                    px: 2,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%)',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                      borderColor: 'rgba(255, 255, 255, 0.2)'
+                    },
+                    '&:active': {
+                      transform: 'translateY(0)',
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)'
+                    }
+                  }}
+                >
                   Login
                 </Button>
-                <Button color="inherit" variant="outlined" onClick={() => navigate("/register")}>
+                <Button 
+                  variant="contained"
+                  onClick={() => navigate("/register")}
+                  sx={{
+                    background: 'linear-gradient(135deg, #64B5F6 0%, #2196F3 50%, #1976D2 100%)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '8px',
+                    px: 2,
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 2px 8px rgba(33, 150, 243, 0.3)',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #82C4F8 0%, #42A5F5 50%, #1E88E5 100%)',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 12px rgba(33, 150, 243, 0.4)',
+                      borderColor: 'rgba(255, 255, 255, 0.2)'
+                    },
+                    '&:active': {
+                      transform: 'translateY(0)',
+                      boxShadow: '0 2px 6px rgba(33, 150, 243, 0.4)'
+                    }
+                  }}
+                >
                   Register
                 </Button>
               </Box>

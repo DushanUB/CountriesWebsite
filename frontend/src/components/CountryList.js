@@ -36,6 +36,7 @@ import {
   Language as LanguageIcon,
   Public as PublicIcon
 } from '@mui/icons-material';
+import Globe3D from './Globe3D';
 import Statistics from './Statistics';
 
 const CountryList = () => {
@@ -170,11 +171,24 @@ const CountryList = () => {
           backdropFilter: 'blur(10px)',
           borderRadius: '12px',
           border: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+          position: 'relative'
         }}
       >
-        <Grid container spacing={3} sx={{ width: '100%', m: 0 }}>
-          <Grid item xs={12} md={4}>
+        <Box sx={{ 
+          position: 'absolute', 
+          right: '24px', 
+          top: '50%', 
+          transform: 'translateY(-50%)', 
+          opacity: 0.8, 
+          pointerEvents: 'none',
+          width: '200px',  // Increased from implicit size
+          height: '200px'  // Added explicit height
+        }}>
+          <Globe3D size={200} />  // Increased from 120
+        </Box>
+        <Grid container spacing={3} sx={{ width: '100%', m: 0, position: 'relative', zIndex: 1 }}>
+          <Grid item xs={12} md={3}>
             <TextField
               fullWidth
               label="Search countries"
@@ -229,7 +243,7 @@ const CountryList = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={3.5}>
             <TextField
               select
               fullWidth
@@ -285,7 +299,7 @@ const CountryList = () => {
               <MenuItem value="Chinese">Chinese</MenuItem>
             </TextField>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={3.5}>
             <TextField
               select
               fullWidth
