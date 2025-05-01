@@ -10,10 +10,16 @@ import {
   CssBaseline,
   Container
 } from '@mui/material';
+import {
+  WbSunny as MorningIcon,
+  Brightness4 as AfternoonIcon,
+  Brightness3 as NightIcon
+} from '@mui/icons-material';
 import CountryList from "./components/CountryList";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import FlagScroller from "./components/FlagScroller";
 
 const theme = createTheme({
   palette: {
@@ -43,31 +49,79 @@ const theme = createTheme({
 
 const AppContent = () => {
   const [user, setUser] = useState(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      setUser(token);
+    const storedUsername = localStorage.getItem("username");
+    if (token && storedUsername) {
+      setUser({ token, username: storedUsername });
     }
+
+    // Update time every minute
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000);
+
+    return () => clearInterval(timer);
   }, []);
+
+  const getGreeting = () => {
+    const hour = currentTime.getHours();
+    if (hour < 12) {
+      return { text: 'Good Morning', icon: <MorningIcon sx={{ mr: 1 }} /> };
+    } else if (hour < 18) {
+      return { text: 'Good Afternoon', icon: <AfternoonIcon sx={{ mr: 1 }} /> };
+    } else {
+      return { text: 'Good Evening', icon: <NightIcon sx={{ mr: 1 }} /> };
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     setUser(null);
     navigate("/login");
   };
 
+  const { text: greeting, icon: timeIcon } = getGreeting();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" elevation={1}>
+      <AppBar 
+        position="fixed" 
+        sx={{
+          background: 'linear-gradient(180deg, #000000 0%, #1a1a1a 100%)',
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        }}
+      >
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate("/")}>
             Country Explorer
           </Typography>
-          <Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            {user && (
+              <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+                {timeIcon}
+                <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                  {greeting} {user.username}
+                </Typography>
+              </Box>
+            )}
             {user ? (
-              <Button color="inherit" onClick={handleLogout}>
+              <Button 
+                color="inherit" 
+                onClick={handleLogout}
+                sx={{
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  '&:hover': {
+                    background: 'rgba(255, 255, 255, 0.2)'
+                  }
+                }}
+              >
                 Logout
               </Button>
             ) : (
@@ -84,7 +138,16 @@ const AppContent = () => {
         </Toolbar>
       </AppBar>
       <Toolbar /> {/* Spacer for fixed AppBar */}
-      <Container maxWidth="xl" sx={{ mt: 4 }}>
+      <Container 
+        maxWidth={false} 
+        sx={{ 
+          mt: 4,
+          px: { xs: 2, sm: 3 },
+          pl: { xs: '190px', sm: '190px' }, // Increased left padding to account for FlagScroller
+          mr: 0, // Remove right margin
+          maxWidth: '100% !important' // Allow container to use full width
+        }}
+      >
         <Routes>
           <Route 
             path="/" 
@@ -98,6 +161,7 @@ const AppContent = () => {
           <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </Container>
+      <FlagScroller />
     </Box>
   );
 };

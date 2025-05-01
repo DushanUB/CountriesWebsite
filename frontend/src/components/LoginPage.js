@@ -23,7 +23,8 @@ const LoginPage = ({ setUser }) => {
     try {
       const response = await loginUser(credentials);
       localStorage.setItem("token", response.token);
-      setUser(response.token);
+      localStorage.setItem("username", credentials.username);
+      setUser({ token: response.token, username: credentials.username });
       navigate("/");
     } catch (error) {
       setError("Invalid credentials. Please try again.");

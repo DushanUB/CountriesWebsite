@@ -24,7 +24,8 @@ import {
   Stack,
   CardHeader,
   ButtonGroup,
-  Divider
+  Divider,
+  Container
 } from '@mui/material';
 import {
   Star as StarIcon,
@@ -158,9 +159,21 @@ const CountryList = () => {
   const displayedCountries = showFavorites ? favorites : countries;
 
   return (
-    <Box>
-      <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
-        <Grid container spacing={3}>
+    <Box sx={{ width: '100%' }}>
+      <Paper 
+        elevation={2} 
+        sx={{ 
+          p: 3, 
+          mb: 4,
+          width: '100%',
+          background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.85) 100%)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '12px',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+        }}
+      >
+        <Grid container spacing={3} sx={{ width: '100%', m: 0 }}>
           <Grid item xs={12} md={4}>
             <TextField
               fullWidth
@@ -174,11 +187,45 @@ const CountryList = () => {
                   <Button 
                     variant="contained" 
                     onClick={handleSearch}
-                    sx={{ ml: 1 }}
+                    sx={{ 
+                      ml: 1,
+                      background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
+                      boxShadow: '0 4px 10px rgba(25, 118, 210, 0.3)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        background: 'linear-gradient(135deg, #1976d2 20%, #1565c0 100%)',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 6px 15px rgba(25, 118, 210, 0.4)'
+                      },
+                      '&:active': {
+                        transform: 'translateY(0)',
+                        boxShadow: '0 2px 5px rgba(25, 118, 210, 0.4)'
+                      }
+                    }}
                   >
                     Search
                   </Button>
                 ),
+                sx: {
+                  color: 'white',
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255, 255, 255, 0.5)',
+                  }
+                }
+              }}
+              sx={{
+                '& .MuiInputLabel-root': {
+                  color: 'rgba(255, 255, 255, 0.7)',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: 'rgba(255, 255, 255, 0.9)',
+                }
               }}
             />
           </Grid>
@@ -191,6 +238,43 @@ const CountryList = () => {
               onChange={(e) => {
                 setLanguage(e.target.value);
                 handleLanguageFilter(e.target.value);
+              }}
+              InputProps={{
+                sx: {
+                  color: 'white',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderRadius: '8px',
+                  transition: 'all 0.3s ease',
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                  },
+                  '&:hover': {
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'rgba(255, 255, 255, 0.3)',
+                    }
+                  },
+                  '&.Mui-focused': {
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'rgba(255, 255, 255, 0.5)',
+                    }
+                  }
+                }
+              }}
+              sx={{
+                '& .MuiInputLabel-root': {
+                  color: 'rgba(255, 255, 255, 0.7)',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: 'rgba(255, 255, 255, 0.9)',
+                },
+                '& .MuiSelect-icon': {
+                  color: 'rgba(255, 255, 255, 0.7)',
+                },
+                '& .MuiMenuItem-root': {
+                  color: 'white',
+                }
               }}
             >
               <MenuItem value="">All Languages</MenuItem>
@@ -211,6 +295,43 @@ const CountryList = () => {
                 setRegion(e.target.value);
                 handleFilter(e.target.value);
               }}
+              InputProps={{
+                sx: {
+                  color: 'white',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderRadius: '8px',
+                  transition: 'all 0.3s ease',
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                  },
+                  '&:hover': {
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'rgba(255, 255, 255, 0.3)',
+                    }
+                  },
+                  '&.Mui-focused': {
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'rgba(255, 255, 255, 0.5)',
+                    }
+                  }
+                }
+              }}
+              sx={{
+                '& .MuiInputLabel-root': {
+                  color: 'rgba(255, 255, 255, 0.7)',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: 'rgba(255, 255, 255, 0.9)',
+                },
+                '& .MuiSelect-icon': {
+                  color: 'rgba(255, 255, 255, 0.7)',
+                },
+                '& .MuiMenuItem-root': {
+                  color: 'white',
+                }
+              }}
             >
               <MenuItem value="">All Regions</MenuItem>
               <MenuItem value="Africa">Africa</MenuItem>
@@ -226,7 +347,38 @@ const CountryList = () => {
               variant={showFavorites ? "contained" : "outlined"}
               startIcon={showFavorites ? <StarIcon /> : <StarBorderIcon />}
               onClick={() => setShowFavorites(!showFavorites)}
-              sx={{ height: '56px' }}
+              sx={{ 
+                height: '56px',
+                background: showFavorites ? 
+                  'linear-gradient(135deg, #FFA000 0%, #FF6F00 100%)' : 
+                  'transparent',
+                border: showFavorites ? 
+                  'none' : 
+                  '1px solid rgba(255, 255, 255, 0.3)',
+                color: showFavorites ? 
+                  'white' : 
+                  'rgba(255, 255, 255, 0.9)',
+                transition: 'all 0.3s ease',
+                boxShadow: showFavorites ?
+                  '0 4px 10px rgba(255, 160, 0, 0.3)' :
+                  'none',
+                '&:hover': {
+                  background: showFavorites ?
+                    'linear-gradient(135deg, #FFB300 0%, #FF8F00 100%)' :
+                    'rgba(255, 255, 255, 0.1)',
+                  borderColor: 'rgba(255, 255, 255, 0.5)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: showFavorites ?
+                    '0 6px 15px rgba(255, 160, 0, 0.4)' :
+                    '0 4px 10px rgba(255, 255, 255, 0.2)'
+                },
+                '&:active': {
+                  transform: 'translateY(0)',
+                  boxShadow: showFavorites ?
+                    '0 2px 5px rgba(255, 160, 0, 0.4)' :
+                    '0 2px 5px rgba(255, 255, 255, 0.1)'
+                }
+              }}
             >
               {showFavorites ? 'All Countries' : 'Favorites'}
             </Button>
@@ -236,25 +388,52 @@ const CountryList = () => {
         <Box sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
-              <ButtonGroup variant="outlined" fullWidth>
+              <ButtonGroup 
+                variant="outlined" 
+                fullWidth
+                sx={{
+                  '& .MuiButton-root': {
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      borderColor: 'rgba(255, 255, 255, 0.5)',
+                      transform: 'translateY(-2px)',
+                    },
+                    '&:active': {
+                      transform: 'translateY(0)',
+                    },
+                    '&.Mui-selected': {
+                      background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
+                      borderColor: 'transparent',
+                      color: 'white',
+                      '&:hover': {
+                        background: 'linear-gradient(135deg, #1976d2 20%, #1565c0 100%)',
+                      }
+                    }
+                  }
+                }}
+              >
                 <Button
                   startIcon={<SortIcon />}
                   onClick={() => handleSort('name')}
-                  variant={sortBy === 'name' ? 'contained' : 'outlined'}
+                  className={sortBy === 'name' ? 'Mui-selected' : ''}
                 >
                   Name
                 </Button>
                 <Button
                   startIcon={<PublicIcon />}
                   onClick={() => handleSort('population')}
-                  variant={sortBy === 'population' ? 'contained' : 'outlined'}
+                  className={sortBy === 'population' ? 'Mui-selected' : ''}
                 >
                   Population
                 </Button>
                 <Button
                   startIcon={<LanguageIcon />}
                   onClick={() => handleSort('area')}
-                  variant={sortBy === 'area' ? 'contained' : 'outlined'}
+                  className={sortBy === 'area' ? 'Mui-selected' : ''}
                 >
                   Area
                 </Button>
@@ -266,6 +445,38 @@ const CountryList = () => {
                 variant={showStats ? "contained" : "outlined"}
                 startIcon={<BarChartIcon />}
                 onClick={() => setShowStats(!showStats)}
+                sx={{
+                  height: '100%',
+                  background: showStats ? 
+                    'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)' : 
+                    'rgba(255, 255, 255, 0.05)',
+                  border: showStats ? 
+                    'none' : 
+                    '1px solid rgba(255, 255, 255, 0.3)',
+                  color: showStats ? 
+                    'white' : 
+                    'rgba(255, 255, 255, 0.9)',
+                  transition: 'all 0.3s ease',
+                  boxShadow: showStats ?
+                    '0 4px 10px rgba(46, 125, 50, 0.3)' :
+                    'none',
+                  '&:hover': {
+                    background: showStats ?
+                      'linear-gradient(135deg, #388E3C 0%, #2E7D32 100%)' :
+                      'rgba(255, 255, 255, 0.1)',
+                    borderColor: 'rgba(255, 255, 255, 0.5)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: showStats ?
+                      '0 6px 15px rgba(46, 125, 50, 0.4)' :
+                      '0 4px 10px rgba(255, 255, 255, 0.2)'
+                  },
+                  '&:active': {
+                    transform: 'translateY(0)',
+                    boxShadow: showStats ?
+                      '0 2px 5px rgba(46, 125, 50, 0.4)' :
+                      '0 2px 5px rgba(255, 255, 255, 0.1)'
+                  }
+                }}
               >
                 {showStats ? 'Hide Statistics' : 'Show Statistics'}
               </Button>
@@ -287,63 +498,170 @@ const CountryList = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <Grid container spacing={3}>
+        <Grid 
+          container 
+          spacing={3}
+          sx={{ 
+            width: '100%',
+            m: 0,
+            '& .MuiGrid-item': {
+              pl: 3,
+              pr: 3,
+            }
+          }}
+        >
           {displayedCountries.map((country) => (
-            <Grid key={country.cca3} item xs={12} sm={6} md={4} lg={3} sx={{ display: 'flex' }}>
+            <Grid 
+              key={country.cca3} 
+              item 
+              xs={12}
+              sm={6}
+              md={3}
+              sx={{
+                display: 'flex'
+              }}
+            >
               <Card 
                 className="country-card"
                 sx={{ 
                   width: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                  background: 'rgba(0, 0, 0, 0.2)',
+                  height: '320px', // Fixed height for uniformity
+                  background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.85) 100%)',
                   backdropFilter: 'blur(10px)',
-                }}
-              >
-                <CardHeader
-                  sx={{ color: 'white' }}
-                  action={
-                    <IconButton
-                      onClick={(e) => handleAddToFavorites(e, country)}
-                      color={favorites.some(fav => fav.cca3 === country.cca3) ? "warning" : "default"}
-                      sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
-                    >
-                      {favorites.some(fav => fav.cca3 === country.cca3) ? <StarIcon /> : <StarBorderIcon />}
-                    </IconButton>
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                  transform: 'perspective(1000px)',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    transform: 'perspective(1000px) translateY(-5px)',
+                    boxShadow: '0 12px 40px rgba(0, 0, 0, 0.3)',
+                    background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%)',
                   }
-                />
-                <CardMedia
-                  component="img"
-                  className="flag-img"
-                  image={country.flags.png}
-                  alt={`Flag of ${country.name.common}`}
-                  onClick={() => setSelectedCountry(country)}
-                />
-                <CardContent sx={{ flexGrow: 1, color: 'white' }}>
-                  <Typography variant="h6" gutterBottom className="card-title">
+                }}
+                onClick={() => setSelectedCountry(country)}
+              >
+                <Box 
+                  className="flag-container" 
+                  sx={{
+                    height: '160px',
+                    width: '100%',
+                    maxWidth: '270px',
+                    minWidth: '270px',
+                    margin: '3 auto',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                    backgroundColor: '#f5f5f5',
+                    p: 2,
+                    borderRadius: '10px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    className="flag-img"
+                    image={country.flags.png}
+                    alt={`Flag of ${country.name.common}`}
+                    sx={{
+                      width: '120%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      borderRadius: '8px',
+                      transition: 'transform 0.3s ease',
+                      '&:hover': {
+                        transform: 'scale(1.05)'
+                      }
+                    }}
+                  />
+                </Box>
+                <CardContent 
+                  sx={{ 
+                    flexGrow: 1, 
+                    color: 'white',
+                    p: 2,
+                    '&:last-child': {
+                      pb: 2
+                    }
+                  }}
+                >
+                  <Typography 
+                    variant="h6" 
+                    gutterBottom 
+                    className="card-title"
+                    sx={{
+                      fontSize: '1.25rem',
+                      fontWeight: 700,
+                      mb: 2,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                      pb: 1
+                    }}
+                  >
                     {country.name.common}
                   </Typography>
                   <Stack spacing={1}>
-                    <Typography variant="body2" className="card-text">
-                      Region: {country.region}
+                    <Typography 
+                      variant="body2" 
+                      className="card-text"
+                      sx={{
+                        fontSize: '0.875rem',
+                        color: 'rgba(255, 255, 255, 0.7)'
+                      }}
+                    >
+                      <strong>Region:</strong> {country.region}
                     </Typography>
-                    <Typography variant="body2" className="card-text">
-                      Capital: {country.capital}
-                    </Typography>
-                    <Typography variant="body2" className="card-text">
-                      Population: {country.population.toLocaleString()}
+                    <Typography 
+                      variant="body2" 
+                      className="card-text"
+                      sx={{
+                        fontSize: '0.875rem',
+                        color: 'rgba(255, 255, 255, 0.7)'
+                      }}
+                    >
+                      <strong>Population:</strong> {country.population.toLocaleString()}
                     </Typography>
                   </Stack>
+                  <Box sx={{ mt: 'auto', pt: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        animation: 'pulseText 2s ease-in-out infinite',
+                        fontSize: '0.8rem',
+                        flex: 1,
+                        textAlign: 'center',
+                        '@keyframes pulseText': {
+                          '0%, 100%': { opacity: 0.5 },
+                          '50%': { opacity: 1 }
+                        }
+                      }}
+                    >
+                      Click to view more details
+                    </Typography>
+                    <IconButton
+                      onClick={(e) => handleAddToFavorites(e, country)}
+                      sx={{
+                        color: favorites.some(fav => fav.cca3 === country.cca3) ? 'gold' : 'rgba(255, 255, 255, 0.7)',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          color: 'gold',
+                          transform: 'scale(1.1)'
+                        }
+                      }}
+                    >
+                      {favorites.some(fav => fav.cca3 === country.cca3) ? <StarIcon /> : <StarBorderIcon />}
+                    </IconButton>
+                  </Box>
                 </CardContent>
-                <CardActions sx={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                  <Button 
-                    size="small" 
-                    onClick={() => setSelectedCountry(country)}
-                    sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
-                  >
-                    Learn More
-                  </Button>
-                </CardActions>
               </Card>
             </Grid>
           ))}
@@ -369,12 +687,17 @@ const CountryList = () => {
             <DialogContent>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={4}>
-                  <Card elevation={0}>
+                  <Card elevation={0} sx={{ maxWidth: '400px', margin: '0 auto', width: '100%' }}>
                     <CardMedia
                       component="img"
                       image={selectedCountry.flags.png}
                       alt={`Flag of ${selectedCountry.name.common}`}
-                      sx={{ objectFit: 'contain', bgcolor: '#f5f5f5' }}
+                      sx={{ 
+                        objectFit: 'contain',
+                        bgcolor: '#f5f5f5',
+                        height: '200px',
+                        width: '100%'
+                      }}
                     />
                   </Card>
                   {selectedCountry.coatOfArms?.png && (
