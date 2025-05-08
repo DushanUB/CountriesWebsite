@@ -1,12 +1,12 @@
 import axios from "axios";
 
 const REST_COUNTRIES_BASE_URL = "https://restcountries.com/v3.1";
-//const BACKEND_BASE_URL = "http://localhost:5000";
-const BACKEND_BASE_URL = process.env.REACT_APP_API_URL;
+const BACKEND_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 // Create axios instance with error handling
 const api = axios.create({
   timeout: 10000,
+  baseURL: BACKEND_BASE_URL
 });
 
 api.interceptors.response.use(
@@ -94,7 +94,7 @@ export const filterByLanguage = async (language) => {
 // User Authentication
 export const registerUser = async (userData) => {
   try {
-    const response = await api.post(`${BACKEND_BASE_URL}/register`, userData);
+    const response = await api.post('/register', userData);
     return response.data;
   } catch (error) {
     console.error('Error registering user:', error);
@@ -104,7 +104,7 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (credentials) => {
   try {
-    const response = await api.post(`${BACKEND_BASE_URL}/login`, credentials);
+    const response = await api.post('/login', credentials);
     return response.data;
   } catch (error) {
     console.error('Error logging in:', error);
@@ -117,7 +117,7 @@ export const addToFavorites = async (userId, countryCode) => {
   try {
     const token = localStorage.getItem("token");
     const response = await api.post(
-      `${BACKEND_BASE_URL}/favorites`, 
+      '/favorites', 
       { userId, countryCode },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -132,7 +132,7 @@ export const getFavorites = async (userId) => {
   try {
     const token = localStorage.getItem("token");
     const response = await api.get(
-      `${BACKEND_BASE_URL}/favorites/${userId}`,
+      `/favorites/${userId}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return response.data;
@@ -147,7 +147,7 @@ export const removeFromFavorites = async (userId, countryCode) => {
   try {
     const token = localStorage.getItem("token");
     const response = await api.delete(
-      `${BACKEND_BASE_URL}/favorites`,
+      `/favorites`,
       { 
         headers: { Authorization: `Bearer ${token}` },
         data: { userId, countryCode }
