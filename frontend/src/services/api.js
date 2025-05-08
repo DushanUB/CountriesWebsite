@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const REST_COUNTRIES_BASE_URL = "https://restcountries.com/v3.1";
-const BACKEND_BASE_URL = "http://localhost:5000";
+//const BACKEND_BASE_URL = "http://localhost:5000";
+const BACKEND_BASE_URL = process.env.REACT_APP_API_URL;
 
 // Create axios instance with error handling
 const api = axios.create({

@@ -23,11 +23,28 @@ const User = mongoose.model("User", userSchema);
 
 // **Register User**
 app.post("/register", async (req, res) => {
-    const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashedPassword });
-    await user.save();
-    res.json({ message: "User registered successfully" });
+    try {
+        const { username, password } = req.body;
+        
+        // Validate input
+        if (!username || !password) {
+            return res.status(400).json({ message: "Username and password are required" });
+        }
+
+        // Check if user already exists
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+            return res.status(400).json({ message: "Username already exists" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new User({ username, password: hashedPassword });
+        await user.save();
+        res.json({ message: "User registered successfully" });
+    } catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).json({ message: "Server error during registration" });
+    }
 });
 
 // **Login User**
